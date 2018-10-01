@@ -39,6 +39,7 @@ for i in range(49):
     popInfectee = 1 - (popSuceptible - popRetablie)
     popI.append(popInfectee)
 
+plt.title("Simulation SIR")
 plt.plot(temps, popS)
 plt.plot(temps, popI)
 plt.plot(temps, popR)
