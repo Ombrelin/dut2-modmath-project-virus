@@ -6,7 +6,18 @@ Created on 24 sept. 2018
 
 #bibliotheques
 from numpy import *
+from tkinter import * 
 import matplotlib.pyplot as plt
+
+#interface
+
+#fenetre = Tk()
+
+#label = Label(fenetre, text="Donnees")
+#label.pack()
+
+
+#fenetre.mainloop()
 
 #entree des parametres
 
@@ -39,7 +50,7 @@ popI.append(popInfectee)
 popR.append(popRetablie)
 popT.append(popSuceptible + popInfectee + popRetablie)
 
-for loop in range(99):
+for i in range(1,100):
     '''
     #popInfectee = - popSuceptible - popInfectee / (1/tauxGuerison)
     popInfectee = popTotale - (popSuceptible - popRetablie)
@@ -64,27 +75,31 @@ for loop in range(99):
     popS.append(popSuceptible)
     
     #popInfectee = popInfectee + popSuceptible - (tauxGuerison * popInfectee)
-    popInfectee = popInfectee + (tauxInfection * popSuceptible * popInfectee/popTotale) - (tauxGuerison * popInfectee)
+    popInfectee = popInfectee + ((tauxInfection * popS[i-1] * popInfectee/popTotale) - (tauxGuerison * popInfectee))
     popI.append(popInfectee)
     
-    popRetablie = popRetablie + tauxGuerison * popInfectee
+    popRetablie = popRetablie + tauxGuerison * popI[i-1]
     popR.append(popRetablie)
     
     popT.append(popSuceptible + popInfectee + popRetablie)
     
-plt.title("Simulation SIR")
-plt.plot(temps, popS)
-plt.plot(temps, popI)
-plt.plot(temps, popR)
-plt.plot(temps, popT)
-plt.show()
-
+    
 for i in range(100):
     print("S : " + str(popS[i]))
     print("I : " + str(popI[i]))
     print("R : " + str(popR[i]))
     print("Population totale : " + str(popT[i]))
     print("********************")
+    
+plt.title("Simulation SIR")
+plt.plot(temps, popS,label='Population Susceptible')
+plt.plot(temps, popI,label='Population Infectée')
+plt.plot(temps, popR, label='Population Retablie')
+plt.plot(temps, popT, label='Population Totale')
+plt.legend(loc='lower right');
+plt.show()
+
+
     
     
     
