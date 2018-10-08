@@ -1,6 +1,4 @@
-'''
-Created on 24 sept. 2018
+from Main.Accueil import *
 
-@author: arsen
-'''
-
+accueil = Accueil()
+accueil.mainloop()
