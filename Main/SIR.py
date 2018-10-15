@@ -15,7 +15,7 @@ class ModeleSIR(Frame):
     def __init__(self, **kwargs):
         #interface
         self.fenetre = Tk()
-        self.fenetre.title("Modèle SIR")
+        self.fenetre.title("Modèle SIRS")
         Frame.__init__(self, self.fenetre, width=300, height=500, **kwargs)
         
         label1 = Label(self.fenetre, text="")
@@ -96,7 +96,7 @@ class ModeleSIR(Frame):
             print("Population totale : " + str(popT[i]))
             print("********************")
             
-        plt.title("Simulation SIR")
+        plt.title("Simulation SIRS")
         plt.plot(temps, popS,label='Population Susceptible')
         plt.plot(temps, popI,label='Population Infectée')
         plt.plot(temps, popR, label='Population Retablie')

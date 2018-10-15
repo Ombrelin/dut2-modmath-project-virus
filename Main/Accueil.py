@@ -22,7 +22,7 @@ class Accueil(Frame):
 
         # Création de nos widgets
         self.titre = Label(self, text="Modélisation Mathématique : Propagation des virus informatiques").pack()
-        self.bouton_SIR = Button(self.fenetre, text="Modèle SIR", command=self.modeleSIR).pack()
+        self.bouton_SIR = Button(self.fenetre, text="Modèle SIRS", command=self.modeleSIR).pack()
         self.boutonSEIR = Button(self.fenetre, text="Modèle SEIR", command=self.modeleSEIR).pack()
         self.boutonSIS = Button(self.fenetre, text="Modèle SIS", command=self.modeleSIS).pack()
         self.bouton_quitter = Button(self.fenetre, text="Quitter", command=self.quit).pack()
