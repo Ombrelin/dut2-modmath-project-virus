@@ -15,6 +15,7 @@ class ModeleSIR(Frame):
     def __init__(self, **kwargs):
         #interface
         self.fenetre = Tk()
+        self.fenetre.title("Modèle SIR")
         Frame.__init__(self, self.fenetre, width=300, height=500, **kwargs)
         
         label1 = Label(self.fenetre, text="")
