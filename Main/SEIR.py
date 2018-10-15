@@ -15,11 +15,17 @@ class ModeleSEIR(Frame):
     def __init__(self, **kwargs):
         #interface
         self.fenetre = Tk()
-        self.fenetre.title("Modèle SEIR")
+        self.fenetre.title("Modèle SIRS")
         Frame.__init__(self, self.fenetre, width=300, height=500, **kwargs)
         
         label1 = Label(self.fenetre, text="")
         label1.pack()
+        
+        self.temps = Scale(self.fenetre, orient='horizontal', from_=0, to=500,
+                       resolution=20, tickinterval=20, length=350,
+                       label="Entrez la durée de l'expérience : ")
+        self.temps.pack()
+        self.temps.set(100)
         
         self.dureeImun = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
                        resolution=0.1, tickinterval=0.1, length=350,
@@ -39,22 +45,22 @@ class ModeleSEIR(Frame):
         self.tInfect.pack()
         self.tInfect.set(0.5)
         
-        self.tGuerison = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
-                       resolution=0.1, tickinterval=0.1, length=350,
+        self.tGuerison = Scale(self.fenetre, orient='horizontal', from_=0, to=0.2,
+                       resolution=0.01, tickinterval=0.01, length=350,
                        label="Entrez le taux de guérison (0 - 1) : ")
         self.tGuerison.pack()
         self.tGuerison.set(0.2)
         
-        boutonValider = Button(self.fenetre, text="Valider", command= lambda: self.SEIR(self.infect.get(),self.tInfect.get(),self.tGuerison.get(), self.dureeImun.get()))
+        boutonValider = Button(self.fenetre, text="Valider", command= lambda: self.SEIR(self.infect.get(),self.tInfect.get(),self.tGuerison.get(), self.dureeImun.get(), self.temps.get()))
         boutonValider.pack()
     
     
-    def SEIR(self, infectee, tInfection, tGuerison, tDureeImun):
+    def SEIR(self, infectee, tInfection, tGuerison, tDureeImun, time):
     
         plt.clf()
         popInfectee = float(infectee)
         
-        TEMPS = 1000
+        TEMPS = time
         
         tauxInfection = float(tInfection)
         
@@ -102,7 +108,7 @@ class ModeleSEIR(Frame):
             print("Population totale : " + str(popT[i]))
             print("********************")
             
-        plt.title("Simulation SEIR")
+        plt.title("Simulation SIRS")
         plt.plot(temps, popS,label='Population Susceptible')
         plt.plot(temps, popI,label='Population Infectée')
         plt.plot(temps, popR, label='Population Rétablie')
