@@ -44,11 +44,17 @@ class ModeleSIS(Frame):
         self.tGuerison.pack()
         self.tGuerison.set(0.2)
         
-        boutonValider = Button(self.fenetre, text="Valider", command= lambda: self.SIS(self.infect.get(),self.tInfect.get(),self.tGuerison.get()))
+        self.tNaissance = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
+                       resolution=0.1, tickinterval=0.1, length=350,
+                       label="Entrez le taux de naissances : ")
+        self.tNaissance.pack()
+        self.tNaissance.set(0.2)
+        
+        boutonValider = Button(self.fenetre, text="Valider", command= lambda: self.SIS(self.infect.get(),self.tInfect.get(),self.tGuerison.get(), self.tNaissance.get()))
         boutonValider.pack()
     
     
-    def SIS(self, infectee, tInfection, tGuerison):
+    def SIS(self, infectee, tInfection, tGuerison, tNaissance):
     
         plt.clf()
         popInfectee = float(infectee)
@@ -58,53 +64,46 @@ class ModeleSIS(Frame):
         
         #nombre jours durant lequel une personne reste infecte
         tauxGuerison = float(tGuerison)
-    
+        tauxNaissance = float(tNaissance)
         popTotale = 50
         
         
         popSuceptible = popTotale - popTotale * popInfectee;
         popInfectee = popTotale * popInfectee
-        popRetablie = 0
-        
+        tNG = tauxNaissance+tauxGuerison
         temps = []
         for i in range(100):
             temps.append(i)
             
         popS = []
         popI = []
-        popR = []
         popT = []
         
         popS.append(popSuceptible)
         popI.append(popInfectee)
-        popR.append(popRetablie)
-        popT.append(popSuceptible + popInfectee + popRetablie)
+        
+        popT.append(popSuceptible + popInfectee)
         
         for i in range(1,100):
-            popSuceptible = popSuceptible - (tauxInfection * popSuceptible * popInfectee/popTotale)
+            popSuceptible = popSuceptible -((tauxInfection/popTotale)*popSuceptible*popInfectee )+(tNG*popInfectee)
             popS.append(popSuceptible)
             
-            #popInfectee = popInfectee + popSuceptible - (tauxGuerison * popInfectee)
-            popInfectee = popInfectee + ((tauxInfection * popS[i-1] * popInfectee/popTotale) - (tauxGuerison * popInfectee))
+            popInfectee = popInfectee + ((tauxInfection/popTotale)*popS[i-1]*popInfectee) - (tNG* popInfectee)
             popI.append(popInfectee)
             
-            popRetablie = popRetablie + tauxGuerison * popI[i-1]
-            popR.append(popRetablie)
             
-            popT.append(popSuceptible + popInfectee + popRetablie)
+            popT.append(popSuceptible + popInfectee)
             
             
         for i in range(100):
             print("S : " + str(popS[i]))
             print("I : " + str(popI[i]))
-            print("R : " + str(popR[i]))
             print("Population totale : " + str(popT[i]))
             print("********************")
             
         plt.title("Simulation SIS")
         plt.plot(temps, popS,label='Population Susceptible')
         plt.plot(temps, popI,label='Population Infectée')
-        plt.plot(temps, popR, label='Population Retablie')
         plt.plot(temps, popT, label='Population Totale')
         plt.legend(loc='lower right');
         plt.show()
