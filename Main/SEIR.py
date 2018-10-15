@@ -20,6 +20,12 @@ class ModeleSEIR(Frame):
         label1 = Label(self.fenetre, text="")
         label1.pack()
         
+        self.dureeImun = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
+                       resolution=0.1, tickinterval=0.1, length=350,
+                       label="Entrez le taux de durée de l'immunité : ")
+        self.dureeImun.pack()
+        self.dureeImun.set(0.3)
+        
         self.infect = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
                        resolution=0.1, tickinterval=0.1, length=350,
                        label="Entrez le pourcentage de personnes suceptibles d'etre infectees (0 - 1) : ")
@@ -34,19 +40,20 @@ class ModeleSEIR(Frame):
         
         self.tGuerison = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
                        resolution=0.1, tickinterval=0.1, length=350,
-                       label="Entrez le taux de gu�rison (0 - 1) : ")
+                       label="Entrez le taux de guérison (0 - 1) : ")
         self.tGuerison.pack()
         self.tGuerison.set(0.2)
         
-        boutonValider = Button(self.fenetre, text="Valider", command= lambda: self.SEIR(self.infect.get(),self.tInfect.get(),self.tGuerison.get()))
+        boutonValider = Button(self.fenetre, text="Valider", command= lambda: self.SEIR(self.infect.get(),self.tInfect.get(),self.tGuerison.get(), self.dureeImun.get()))
         boutonValider.pack()
     
     
-    def SEIR(self, infectee, tInfection, tGuerison):
+    def SEIR(self, infectee, tInfection, tGuerison, tDureeImun):
     
         plt.clf()
         popInfectee = float(infectee)
         
+        TEMPS = 1000
         
         tauxInfection = float(tInfection)
         
@@ -61,7 +68,7 @@ class ModeleSEIR(Frame):
         popRetablie = 0
         
         temps = []
-        for i in range(100):
+        for i in range(TEMPS):
             temps.append(i)
             
         popS = []
@@ -74,28 +81,27 @@ class ModeleSEIR(Frame):
         popR.append(popRetablie)
         popT.append(popSuceptible + popInfectee + popRetablie)
         
-        for i in range(1,100):
-            popSuceptible = popSuceptible - (tauxInfection * popSuceptible * popInfectee/popTotale)
+        for i in range(1,TEMPS):
+            popSuceptible = popSuceptible - (tauxInfection * popSuceptible * popInfectee/popTotale) + tDureeImun*popRetablie/popTotale
             popS.append(popSuceptible)
             
-            #popInfectee = popInfectee + popSuceptible - (tauxGuerison * popInfectee)
             popInfectee = popInfectee + ((tauxInfection * popS[i-1] * popInfectee/popTotale) - (tauxGuerison * popInfectee))
             popI.append(popInfectee)
             
-            popRetablie = popRetablie + tauxGuerison * popI[i-1]
+            popRetablie = popRetablie + tauxGuerison * popI[i-1] - tDureeImun*popR[i-1]/popTotale
             popR.append(popRetablie)
             
             popT.append(popSuceptible + popInfectee + popRetablie)
             
             
-        for i in range(100):
+        for i in range(TEMPS):
             print("S : " + str(popS[i]))
             print("I : " + str(popI[i]))
             print("R : " + str(popR[i]))
             print("Population totale : " + str(popT[i]))
             print("********************")
             
-        plt.title("Simulation SIR")
+        plt.title("Simulation SEIR")
         plt.plot(temps, popS,label='Population Susceptible')
         plt.plot(temps, popI,label='Population Infectée')
         plt.plot(temps, popR, label='Population Rétablie')

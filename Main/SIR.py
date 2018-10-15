@@ -22,19 +22,19 @@ class ModeleSIR(Frame):
         
         self.infect = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
                        resolution=0.1, tickinterval=0.1, length=350,
-                       label="Entrez le pourcentage de personnes suceptibles d'etre infectees (0 - 1) : ")
+                       label="Entrez le pourcentage de personnes suceptibles d'être infectées : ")
         self.infect.pack()
         self.infect.set(0.5)
         
         self.tInfect = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
                        resolution=0.1, tickinterval=0.1, length=350,
-                       label="Entrez le taux d'infection (0 - 1) : ")
+                       label="Entrez le taux d'infection : ")
         self.tInfect.pack()
         self.tInfect.set(0.5)
         
         self.tGuerison = Scale(self.fenetre, orient='horizontal', from_=0, to=1,
                        resolution=0.1, tickinterval=0.1, length=350,
-                       label="Entrez le taux de guérison (0 - 1) : ")
+                       label="Entrez le taux de guérison : ")
         self.tGuerison.pack()
         self.tGuerison.set(0.2)
         
