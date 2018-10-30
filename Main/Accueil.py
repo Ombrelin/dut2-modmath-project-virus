@@ -11,7 +11,7 @@ from tkinter import *
 
 class Accueil(Frame):
     
-    """Notre fen�tre principale.
+    """Notre fenêtre principale.
     Chaque bouton donne accès à l'interface d'une simulation"""
     
     def __init__(self, **kwargs):
