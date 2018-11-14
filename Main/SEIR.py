@@ -5,7 +5,6 @@ Created on 9 oct. 2018
 '''
 
 #bibliotheques
-from numpy import *
 from tkinter import * 
 import matplotlib.pyplot as plt
 
